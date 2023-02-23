@@ -61,17 +61,16 @@ def create_accounts():
 # LIST ALL ACCOUNTS
 ######################################################################
 
+
 @app.route("/accounts", methods=["GET"])
 def get_all_accounts():
     """
     Reads all Account
-    This endpoint will read all Account 
+    This endpoint will read all Account
     """
-    app.logger.info("Find all accounts present" )
+    app.logger.info("Find all accounts present")
     accounts = Account.all()
-    #if not account:
-    #    abort(status.HTTP_404_NOT_FOUND, f"Account with id [{account_id}] could not be found.")
-    result=[]
+    result = []
     for account in accounts:
         result.append(account.serialize())
 
@@ -110,13 +109,13 @@ def put_accounts(account_id):
     account = Account.find(account_id)
     if not account:
         abort(status.HTTP_404_NOT_FOUND, f"Account with id [{account_id}] could not be found.")
-    id= account.id
+    id = account.id
     account.deserialize(request.get_json())
-    account.id= id;
+    account.id = id
 
     account.update()
     message = account.serialize()
-    
+
     return message, status.HTTP_200_OK
 
 
