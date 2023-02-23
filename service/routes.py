@@ -61,7 +61,21 @@ def create_accounts():
 # LIST ALL ACCOUNTS
 ######################################################################
 
-# ... place you code here to LIST accounts ...
+@app.route("/accounts", methods=["GET"])
+def get_all_accounts():
+    """
+    Reads all Account
+    This endpoint will read all Account 
+    """
+    app.logger.info("Find all accounts present" )
+    accounts = Account.all()
+    #if not account:
+    #    abort(status.HTTP_404_NOT_FOUND, f"Account with id [{account_id}] could not be found.")
+    result=[]
+    for account in accounts:
+        result.append(account.serialize())
+
+    return result, status.HTTP_200_OK
 
 
 ######################################################################

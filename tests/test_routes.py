@@ -201,3 +201,29 @@ class TestAccountService(TestCase):
             content_type="application/json"
         )
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_read_all_account(self):
+        """It should Read all Accounts"""
+        account = self._create_accounts(3)
+
+        response = self.client.get(
+            BASE_URL,
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        get_all_account = response.get_json()
+
+        self.assertEqual(len(get_all_account),len(account))
+
+        
+    def test_read_none_account(self):
+        """It should reads zero list Accounts if not found"""
+
+        response = self.client.get(
+            BASE_URL,
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        get_all_account = response.get_json()
+
+        self.assertEqual(len(get_all_account),0)
