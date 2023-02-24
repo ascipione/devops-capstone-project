@@ -21,6 +21,7 @@ DATABASE_URI = os.getenv(
 BASE_URL = "/accounts"
 HTTPS_ENVIRON = {'wsgi.url_scheme': 'https'}
 
+
 ######################################################################
 #  T E S T   C A S E S
 ######################################################################
@@ -139,7 +140,8 @@ class TestAccountService(TestCase):
 
     def test_get_account_not_found(self):
         """It should not Read an Account that is not found"""
-        not_existing_id=0
+
+        not_existing_id = 0
         response = self.client.get(
             f"{BASE_URL}/{not_existing_id}",
             content_type="application/json"
@@ -148,9 +150,10 @@ class TestAccountService(TestCase):
 
     def test_update_an_account(self):
         """It should Update a single Account"""
+
         account = self._create_accounts(1)[0]
 
-        account.name = "new_name";
+        account.name = "new_name"
 
         response = self.client.put(
             f"{BASE_URL}/{account.id}",
@@ -172,7 +175,7 @@ class TestAccountService(TestCase):
     def test_update_account_not_found(self):
         """It should not Update an Account that is not found"""
         account = self._create_accounts(1)[0]
-        not_existing_id=0
+        not_existing_id = 0
         response = self.client.put(
             f"{BASE_URL}/{not_existing_id}",
             json=account.serialize(),
@@ -194,10 +197,11 @@ class TestAccountService(TestCase):
             content_type="application/json"
         )
         self.assertEqual(response_get.status_code, status.HTTP_404_NOT_FOUND)
-        
+
     def test_delete_account_not_found(self):
         """It should do Nothing on Delete of an Account that is not found"""
-        not_existing_id=0
+
+        not_existing_id = 0
         response = self.client.delete(
             f"{BASE_URL}/{not_existing_id}",
             content_type="application/json"
@@ -215,9 +219,8 @@ class TestAccountService(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         get_all_account = response.get_json()
 
-        self.assertEqual(len(get_all_account),len(account))
+        self.assertEqual(len(get_all_account), len(account))
 
-        
     def test_read_none_account(self):
         """It should reads zero list Accounts if not found"""
 
@@ -228,10 +231,11 @@ class TestAccountService(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         get_all_account = response.get_json()
 
-        self.assertEqual(len(get_all_account),0)
-    
+        self.assertEqual(len(get_all_account), 0)
+
     def test_security_headers(self):
         """It should return security headers"""
+
         response = self.client.get('/', environ_overrides=HTTPS_ENVIRON)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         headers = {
@@ -243,7 +247,7 @@ class TestAccountService(TestCase):
         }
         for key, value in headers.items():
             self.assertEqual(response.headers.get(key), value)
-            
+
     def test_cors_security(self):
         """It should return a CORS header"""
         response = self.client.get('/', environ_overrides=HTTPS_ENVIRON)
